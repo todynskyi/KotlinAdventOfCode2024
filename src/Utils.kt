@@ -23,3 +23,9 @@ fun Any?.println() = println(this)
 fun toPairs(input: List<String>, delimiter: String = "   "): List<Pair<Int, Int>> =
     input.map { it.split(delimiter) }
         .map { it[0].toInt() to it[1].toInt() }
+
+fun List<String>.toLists(delimiter: String = " "): List<List<Int>> =
+    this.map {
+        it.split(delimiter)
+            .map { num -> num.toInt() }.toList()
+    }
