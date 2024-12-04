@@ -8,6 +8,8 @@ import kotlin.io.path.readText
  */
 fun readInput(name: String) = Path("src/$name.txt").readText().trim().lines()
 
+fun readInputOnly(name: String) = Path("src/$name.txt").readText().removePrefix("\n")
+
 /**
  * Converts string to md5 hash.
  */
@@ -29,3 +31,7 @@ fun List<String>.toLists(delimiter: String = " "): List<List<Int>> =
         it.split(delimiter)
             .map { num -> num.toInt() }.toList()
     }
+
+fun String.isNumeric(): Boolean {
+    return this.all { it.isDigit() }
+}
