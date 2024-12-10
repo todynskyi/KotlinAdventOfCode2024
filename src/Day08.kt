@@ -47,4 +47,12 @@ data class Point(val x: Int, val y: Int) {
 
     operator fun minus(other: Point): Point =
         Point(x - other.x, y - other.y)
+
+    fun neighbors(): Set<Point> =
+        setOf(
+            this + Point(0, -1),
+            this + Point(1, 0),
+            this + Point(0, 1),
+            this + Point(-1, 0)
+        )
 }
