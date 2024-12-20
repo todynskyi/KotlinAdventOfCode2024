@@ -1,3 +1,5 @@
+import kotlin.math.absoluteValue
+
 fun main() {
     fun List<String>.toGrid(): Collection<List<Point>> = this
         .flatMapIndexed { y, row ->
@@ -50,6 +52,9 @@ data class Point(val x: Int, val y: Int) {
 
     operator fun times(other: Point) =
         Point(x * other.x - y * other.y, x * other.y + y * other.x)
+
+    fun distanceTo(other: Point): Int =
+        (x - other.x).absoluteValue + (y - other.y).absoluteValue
 
     fun neighbors(): Set<Point> =
         setOf(
