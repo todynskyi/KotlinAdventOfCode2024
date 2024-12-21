@@ -43,9 +43,8 @@ fun main() {
         }.second
     }
 
-    fun List<String>.solve(limit: Int): Long {
-        return this.sumOf { code -> calculate(code, limit, 0) * code.filter { it.isDigit() }.toLong() }
-    }
+    fun List<String>.solve(limit: Int): Long =
+        this.sumOf { code -> calculate(code, limit, 0) * code.filter { it.isDigit() }.toLong() }
 
     fun part1(input: List<String>): Long = input.solve(2)
 
