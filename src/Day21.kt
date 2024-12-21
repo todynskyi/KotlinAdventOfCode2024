@@ -32,18 +32,15 @@ fun main() {
         }
     }
 
-    fun calculate(sequence: String, limit: Int, depth: Int): Long {
-        val key = Triple(sequence, depth, limit)
-        return cache.getOrPut(key) {
-            sequence.fold(Pair(if (depth == 0) keypad['A']!! else keypad['@']!!, 0L)) { (pos, sum), char ->
-                val next = keypad[char]!!
-                val (dx, dy) = next - pos
-                val paths = ((if (dx < 0) "^".repeat(-dx) else "v".repeat(dx)) + if (dy < 0) "<".repeat(-dy) else ">".repeat(dy)).toPermutations()
-                    .filter { path -> path.asSequence().runningFold(pos) { pos, dir -> pos + dir.toPoint() }.all { it in keypad.values } }
-                    .map { "$it@" }.ifEmpty { listOf("@") }
-                next to (sum + if (depth == limit) paths.minOf { it.length }.toLong() else paths.minOfOrNull { calculate(it, limit, depth + 1) } ?: paths.minOf { it.length }.toLong())
-            }.second
-        }
+    fun calculate(sequence: String, limit: Int, depth: Int): Long = cache.getOrPut(Triple(sequence, depth, limit)) {
+        sequence.fold(Pair(if (depth == 0) keypad['A']!! else keypad['@']!!, 0L)) { (pos, sum), char ->
+            val point = keypad[char]!!
+            val (x, y) = point - pos
+            val paths = ((if (x < 0) "^".repeat(-x) else "v".repeat(x)) + if (y < 0) "<".repeat(-y) else ">".repeat(y)).toPermutations()
+                .filter { path -> path.asSequence().runningFold(pos) { pos, dir -> pos + dir.toPoint() }.all { it in keypad.values } }
+                .map { "$it@" }.ifEmpty { listOf("@") }
+            point to (sum + if (depth == limit) paths.minOf { it.length }.toLong() else paths.minOfOrNull { calculate(it, limit, depth + 1) } ?: paths.minOf { it.length }.toLong())
+        }.second
     }
 
     fun List<String>.solve(limit: Int): Long {
